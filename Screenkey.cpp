@@ -170,7 +170,7 @@ int _bitnum, _buff_byte, _buff_bit;
       {
       // for (_bitnum=0; _bitnum<864; _bitnum++)
       // {
-          _bitnum = 864-( (x+1) + ((y)*36));
+          _bitnum = (XRES*YRES)-( (x+1) + ((y)*XRES));
           _buff_byte = _bitnum/8;
           _buff_bit = _bitnum%8;
    	  dwg_buff[_buff_byte] |= (1<<_buff_bit);	
