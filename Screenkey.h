@@ -96,7 +96,7 @@
 class Screenkey
 {
   public:
-    Screenkey(int pin);
+    Screenkey(int pin, int xres = XRES, int yres = YRES);
     void load_img(uint8_t * data);
     void set_color(uint8_t color);
     void init();
@@ -112,7 +112,7 @@ class Screenkey
     void write(uint8_t);
     void write(const char *str);
     void write(const uint8_t *buffer, uint8_t size);
- void print(const char[]);
+    void print(const char[]);
     void print(char, int = BYTE);
     void print(unsigned char, int = BYTE);
     void print(int, int = DEC);
@@ -155,6 +155,8 @@ class Screenkey
   private:
     int _pin;
     int _bitnum;
+    int _xres;
+    int _yres;
     unsigned char dwg_buff[108];   // Ram used as a drawing buffer
     uint8_t cursor_x,cursor_y;
     const unsigned char * font;

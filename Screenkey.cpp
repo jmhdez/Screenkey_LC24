@@ -33,10 +33,12 @@
 #include "Arduino.h"
 #include "Screenkey.h"
 
-Screenkey::Screenkey(int pin)
+Screenkey::Screenkey(int pin, int xres, int yres)
 {
   pinMode(pin, OUTPUT);
   _pin = pin;
+  _xres = xres;
+  _yres = yres;
 }
 
 /* Prepares a word to be sent to the lcd */
@@ -88,7 +90,7 @@ void Screenkey::screenkey_reg_2(uint8_t reg, uint8_t val1, uint8_t val2)
   screenkey_stop();
 }
 
-// Write a full image (XRES*YRES / 8  bytes)  to the screen
+// Write a full image (_xres*_yres / 8  bytes)  to the screen
 // Data is a pointer to 108 bytes of image data to display
 void Screenkey::screenkey_write_img(uint8_t * data)
 {
@@ -97,7 +99,7 @@ void Screenkey::screenkey_write_img(uint8_t * data)
 
   screenkey_start();
   screenkey_write(0x80,1);
-  for (i=0; i<XRES*YRES/8; i++)
+  for (i=0; i<_xres*_yres/8; i++)
     screenkey_write(data[i], 1);
 
   screenkey_stop();
@@ -109,7 +111,7 @@ void Screenkey::fill()
 {
 
   uint8_t i;
-  for (i=0; i<XRES*YRES/8; i++)
+  for (i=0; i<_xres*_yres/8; i++)
     dwg_buff[i] = 0xFF;
 
 }
@@ -119,7 +121,7 @@ void Screenkey::clear()
 {
 
   uint8_t i;
-  for (i=0; i<XRES*YRES/8; i++)
+  for (i=0; i<_xres*_yres/8; i++)
     dwg_buff[i] = 0x00;
 
 }
@@ -147,7 +149,7 @@ void Screenkey::load_img(uint8_t * data)
 {
 // dwg_buff = data;
   uint8_t i;
-  for (i=0; i<XRES*YRES/8; i++)
+  for (i=0; i<_xres*_yres/8; i++)
    dwg_buff[i] = data[i];
 
 
@@ -162,7 +164,7 @@ void Screenkey::set_pixel(uint8_t x, uint8_t y)
 {
 int _bitnum, _buff_byte, _buff_bit;
 //extern unsigned char dwg_buff[108];
-    if (x > XRES || y > YRES)
+    if (x > _xres || y > _yres)
       {
 //		return;
       }
@@ -170,7 +172,7 @@ int _bitnum, _buff_byte, _buff_bit;
       {
       // for (_bitnum=0; _bitnum<864; _bitnum++)
       // {
-          _bitnum = (XRES*YRES)-( (x+1) + ((y)*XRES));
+          _bitnum = (_xres*_yres)-( (x+1) + ((y)*_xres));
           _buff_byte = _bitnum/8;
           _buff_bit = _bitnum%8;
    	  dwg_buff[_buff_byte] |= (1<<_buff_bit);	
@@ -399,7 +401,7 @@ void Screenkey::write(uint8_t c) {
 			//clear_screen();
 			break;
 		default:
-			if (cursor_x >= (YRES*8 - pgm_read_byte(font))) {
+			if (cursor_x >= (_yres*8 - pgm_read_byte(font))) {
 				cursor_x = 0;
 				inc_txtline();
 				print_char(cursor_x,cursor_y,c);
