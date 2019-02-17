@@ -88,7 +88,7 @@ void Screenkey::screenkey_reg_2(uint8_t reg, uint8_t val1, uint8_t val2)
   screenkey_stop();
 }
 
-// Write a 108 byte image to the screen
+// Write a full image (XRES*YRES / 8  bytes)  to the screen
 // Data is a pointer to 108 bytes of image data to display
 void Screenkey::screenkey_write_img(uint8_t * data)
 {
@@ -97,7 +97,7 @@ void Screenkey::screenkey_write_img(uint8_t * data)
 
   screenkey_start();
   screenkey_write(0x80,1);
-  for (i=0; i<108; i++)
+  for (i=0; i<XRES*YRES/8; i++)
     screenkey_write(data[i], 1);
 
   screenkey_stop();
@@ -109,7 +109,7 @@ void Screenkey::fill()
 {
 
   uint8_t i;
-  for (i=0; i<108; i++)
+  for (i=0; i<XRES*YRES/8; i++)
     dwg_buff[i] = 0xFF;
 
 }
@@ -119,7 +119,7 @@ void Screenkey::clear()
 {
 
   uint8_t i;
-  for (i=0; i<108; i++)
+  for (i=0; i<XRES*YRES/8; i++)
     dwg_buff[i] = 0x00;
 
 }
@@ -147,7 +147,7 @@ void Screenkey::load_img(uint8_t * data)
 {
 // dwg_buff = data;
   uint8_t i;
-  for (i=0; i<108; i++)
+  for (i=0; i<XRES*YRES/8; i++)
    dwg_buff[i] = data[i];
 
 
