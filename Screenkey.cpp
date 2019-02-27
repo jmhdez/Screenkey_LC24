@@ -141,7 +141,7 @@ void Screenkey::init()
 {
  
 screenkey_reg_1(0xEE, 0x00);
-  screenkey_reg_2(0xEF, 0x07, 0x00);
+  screenkey_reg_2(0xEF, 0x02, 0x05);
   set_color(BL_NONE);
 }
 
